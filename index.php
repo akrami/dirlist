@@ -23,6 +23,16 @@ function retrieve($dir, $indent = 0) {
 	return $dirlist;
 }
 
+function convertByte($size){
+	if ($size==0) {
+		return 0;
+	}
+  $base = log($size) / log(1024);
+  $suffix = array("", "KB", "MB", "GB", "TB");
+  $f_base = floor($base);
+  return round(pow(1024, $base - floor($base)), 1) . $suffix[$f_base];
+}
+
 $result = retrieve('.');
 ?>
 <!DOCTYPE html>
@@ -38,7 +48,7 @@ $result = retrieve('.');
 			font-family: 'Open Sans Condensed', sans-serif;
 		}
 		table td {
-			font-size: 1.2em;
+			font-size: 0.9em;
 			padding: 5px 3px;
 		}
 		table td i {
@@ -60,11 +70,25 @@ $result = retrieve('.');
 			color: white;
 			text-shadow: 1px 1px 1px #777;
 		}
+		.fa-folder-open {
+			color: #EAD38F;
+		}
+		.fa-file-alt {
+			color: #A3A3A3;
+		}
+		.fa-file-audio {
+			color: #B76E79;
+		}
+		.fa-file-video {
+			color: #C4D4E0;
+		}
+		.fa-file-image {
+			color: #FA929E;
+		}
 	</style>
 </head>
 <body>
 	<table cellpadding="0" cellspacing="0">
-		<caption>Directory List</caption>
 		<thead>
 			<tr>
 				<th>File</th>
@@ -100,7 +124,7 @@ $result = retrieve('.');
 					}
 					echo $file['name'] ?></td>
 					<td><?php echo $file['type'] ?></td>
-					<td><?php echo $file['size'] ?></td>
+					<td><?php echo convertByte($file['size']) ?></td>
 				</tr>
 			<?php } ?>
 		</tbody>
